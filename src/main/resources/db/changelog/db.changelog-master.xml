@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="00_create_schema.sql" relativeToChangelogFile="true"/>
+    <include file="01_add_user_table.sql" relativeToChangelogFile="true"/>
+    <include file="02_add_user_profile_table.sql" relativeToChangelogFile="true"/>
+    <include file="03_add_category_table.sql" relativeToChangelogFile="true"/>
+    <include file="04_add_course_table.sql" relativeToChangelogFile="true"/>
+    <include file="05_add_module_table.sql" relativeToChangelogFile="true"/>
+    <include file="06_add_lesson_table.sql" relativeToChangelogFile="true"/>
+    <include file="07_add_assignment_table.sql" relativeToChangelogFile="true"/>
+    <include file="08_add_submission_table.sql" relativeToChangelogFile="true"/>
+    <include file="09_add_quiz_table.sql" relativeToChangelogFile="true"/>
+    <include file="10_add_question_table.sql" relativeToChangelogFile="true"/>
+    <include file="11_add_answer_option_table.sql" relativeToChangelogFile="true"/>
+    <include file="12_add_quiz_submission_table.sql" relativeToChangelogFile="true"/>
+    <include file="13_add_course_review_table.sql" relativeToChangelogFile="true"/>
+    <include file="14_add_tag_table.sql" relativeToChangelogFile="true"/>
+    <include file="15_add_course_tag_table.sql" relativeToChangelogFile="true"/>
+    <include file="16_add_enrollment_table.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>

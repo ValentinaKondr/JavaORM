@@ -1,231 +1,84 @@
-# Платформа онлайн-обучения
+# ORM 
 
-Данный проект представляет собой учебную платформу для онлайн-курсов, посвящённых работе с ORM и Hibernate. Решение демонстрирует практическое использование **Spring Boot**, **JPA/Hibernate** и **PostgreSQL** при разработке комплексной системы управления образовательным процессом.
+Система управления учебными курсами, которая позволит вести расписание занятий, раздавать задания студентам, собирать их решения и проводить тестирование знаний.
 
----
-
-## Функциональность
-
-- **Управление пользователями**: студенты, преподаватели и администраторы  
-- **Каталог курсов**: создание, редактирование и просмотр курсов  
-- **Структура курсов**: модули, уроки, задания  
-- **Система тестирования**: викторины с вопросами и вариантами ответов  
-- **Запись на курсы**: связи Many-to-Many между студентами и курсами  
-- **Система оценивания**: проверка заданий и выставление баллов  
-- **Отзывы и рейтинги**: обратная связь от студентов  
-
----
-
-## Архитектура
-
-Проект реализован с использованием многослойной архитектуры:
-
-- **Entity** — JPA-сущности и связи между ними  
-- **Repository** — Spring Data JPA репозитории  
-- **Service** — бизнес-логика и управление транзакциями  
-- **Controller** — REST API эндпойнты  
-- **Config** — конфигурация приложения  
-
----
 
 ## Технологии
 
-- **Java 17**
-- **Spring Boot 3.2.x**
-- **Spring Data JPA**
-- **Hibernate**
-- **PostgreSQL**
-- **Testcontainers**
-- **Gradle**
+Проект использует следующие технологии:
 
----
+- Kotlin 
+- Spring Boot - 3.5.8
+- PostgreSQL - БД
+- Lombok - для упрощения кода
+- Liquibase - версионирование БД
+- Junit - тесты
+- Maven - Сборка
 
-## Модель данных
+## Как запустить
 
-В проекте реализовано более **17 JPA-сущностей** с различными типами связей.
+Необходимо указать в настройках переменные окружения:
+```yaml
+spring:
+  datasource:
+    url: ${DB_URL} - путь подключения к БД
+    username: ${DB_USER} - имя пользователя БД
+    password: ${DB_PASSWORD} - пароль пользователя БД
+```
 
-### Основные сущности
+Для запуска проекта необходимо создать jar файл с помощью команды:
+```bash
+mvn clean install
+```
 
-- **User** — пользователь системы  
-- **Profile** — профиль пользователя (One-to-One)  
-- **Category** — категория курсов  
-- **Course** — учебный курс  
-- **Enrollment** — запись студента на курс  
-- **Module** — модуль курса  
-- **Lesson** — урок  
-- **Assignment** — задание  
-- **Submission** — решение задания  
-- **Quiz** — тест  
-- **Question** — вопрос теста  
-- **AnswerOption** — вариант ответа  
-- **QuizSubmission** — результат прохождения теста  
-- **CourseReview** — отзыв о курсе  
-- **Tag** — теги курсов  
-
-Все связи настроены с **FetchType.LAZY** для демонстрации особенностей ORM.
-
----
-
-## Установка и запуск
-
-### Требования
-
-1. **Java 17** или выше  
-2. **Gradle** (или Gradle Wrapper)
-
----
-
-### Быстрый запуск
-
-Проект поддерживает **два режима работы с базой данных**.
-
-#### Вариант 1: H2 (embedded)
+И запустить jar файл командой:
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=h2'
+java -jar target/orm-0.0.1-SNAPSHOT.jar
 ```
 
-#### Вариант 2: PostgreSQL
-
-**Через Docker Compose (рекомендуется):**
-```bash
-docker-compose up -d
-```
-
-**Ручная настройка БД:**
-```sql
-CREATE DATABASE education_platform;
-CREATE USER postgres WITH PASSWORD 'postgres';
-GRANT ALL PRIVILEGES ON DATABASE education_platform TO postgres;
-```
-
-**Запуск приложения:**
-```bash
-./gradlew bootRun
-```
-
-Приложение доступно по адресу:  
-`http://localhost:8080`
-
----
-
-## H2 Console
-
-Доступна при использовании профиля **h2**:
-
-- URL: `http://localhost:8080/h2-console`  
-- JDBC URL: `jdbc:h2:mem:testdb`  
-- Username: `sa`  
-- Password: *(пусто)*  
-
----
-
-## REST API
-
-### Курсы
-
-```http
-POST /api/courses
-GET /api/courses/{id}
-GET /api/courses
-GET /api/courses/category/{categoryId}
-GET /api/courses/teacher/{teacherId}
-POST /api/courses/{courseId}/modules
-```
-
----
-
-### Запись на курсы
-
-```http
-POST /api/enrollments
-DELETE /api/enrollments
-GET /api/enrollments/student/{studentId}/courses
-```
-
----
-
-### Задания
-
-```http
-POST /api/assignments
-POST /api/assignments/{assignmentId}/submit
-PUT /api/assignments/submissions/{submissionId}/grade
-```
-
----
-
-### Тестирование
-
-```http
-POST /api/quizzes
-POST /api/quizzes/{quizId}/questions
-POST /api/quizzes/questions/{questionId}/options
-POST /api/quizzes/{quizId}/take
-```
-
----
-
-## Демо-данные
-
-При старте приложения автоматически создаются:
-
-- преподаватель и два студента  
-- категории курсов  
-- курсы с модулями и уроками  
-- записи студентов  
-- задания и тесты  
-- отзывы  
-
----
-
-## Тестирование
-
-### Unit-тесты
-
-- сервисы курсов  
-- записи на курсы  
-- задания  
-
-### Интеграционные тесты
-
-Используется **Testcontainers**:
-- проверка репозиториев  
-- end-to-end сценарии  
-- работа с ленивой загрузкой  
-- миграция схемы базы данных  
-
----
+Тесты запускаются командой `mvn test`.
 
 ## Структура проекта
 
-```
-src/main/java/valyush/educationplatform/
-├── entity/
-├── repository/
-├── service/
-├── controller/
-└── config/
+- [domain](src/main/kotlin/v/orm/domain) - Бизнес-модель проекта
 
-src/test/java/valyush/educationplatform/
-└── EducationPlatformIntegrationTest.java
-```
+В папках entity содержатся модели сущностей, а в repository - DAO интерфейсы
 
----
+- [service](src/main/kotlin/v/orm/service) - Сервисный слой проекта
+- [changelog](src/main/resources/db/changelog) - Скрипты миграции БД
+- [tests](src/test/kotlin/v/orm/service) - Тесты сервисного слоя
+- [application.yml](src/main/resources/application.yml) - Конфигурация приложения
 
-## Docker и CI/CD
+Проект покрыт тестами на 100%
 
-Проект содержит `Dockerfile` и `docker-compose.yml`.
+## Бизнес-модель проекта
 
-```bash
-docker-compose up -d
-docker-compose down
-```
+Бизнес-модель проекта
 
-Настроен CI/CD пайплайн (GitHub Actions) для сборки и запуска тестов.
+В основе системы лежит набор доменных сущностей, которые описывают структуру образовательной платформы и взаимодействие пользователей с контентом.  
+В качестве общего базового класса используется BaseEntity, от которого наследуются остальные сущности и который содержит общие поля.  
+Обучение организовано вокруг курсов. Каждый Course создаётся и ведётся преподавателем, относится к определённой Category (например, «Программирование» или «Математика») и может иметь набор тегов (Tag). 
+Студенты могут записываться на курсы через сущность Enrollment, которая связывает пользователя с выбранным курсом. Также пользователи могут оставлять отзывы в виде CourseReview.  
+Курс состоит из модулей (Module). Каждый модуль объединяет несколько уроков (Lesson) и может содержать один тест (Quiz) в рамках связи «один к одному».  
+Уроки могут включать задания (Assignment), которые студенты выполняют и отправляют на проверку. Результаты выполнения хранятся в виде Submission, где указывается оценка и комментарий преподавателя.  
+Тесты (Quiz) состоят из набора вопросов (Question), каждый из которых имеет несколько вариантов ответов (AnswerOption), среди которых может быть правильный. После прохождения теста создаётся запись QuizSubmission, содержащая результат, набранные баллы.   
+Пользователи системы представлены сущностью User, которая определяет роль (преподаватель или студент). Дополнительная информация о пользователе хранится в UserProfile.   
+Таким образом, модель охватывает полный цикл обучения: от создания курсов и контента до взаимодействия студентов с заданиями, тестами и системой оценки.  
 
----
-
-## Итог
-
-Проект представляет собой полноценный учебный пример backend-приложения на Spring Boot с богатой доменной моделью, REST API, тестированием и поддержкой контейнеризации.
+- **[BaseEntity](src/main/kotlin/v/orm/domain/base/BaseEntity.kt)** - базовый класс, содержащий общие поля и логику для всех сущностей.
+- **[User](src/main/kotlin/v/orm/domain/user/entity/User.kt)** – учётная запись пользователя системы с определённой ролью.
+- **[UserProfile](src/main/kotlin/v/orm/domain/user/entity/UserProfile.kt)** - расширенная информация о пользователе и его персональных данных.
+- **[Lesson](src/main/kotlin/v/orm/domain/lesson/entity/Lesson.kt)** – элемент модуля, включающий теоретический материал и связанные задания.
+- **[Assignment](src/main/kotlin/v/orm/domain/assignment/entity/Assignment.kt)** – сущность, представляющая учебное задание для студентов.
+- **[Module](src/main/kotlin/v/orm/domain/module/entity/Module.kt)** – структурная часть курса, объединяющая уроки и связанные с ними тесты по схеме один к одному.
+- **[Submission](src/main/kotlin/v/orm/domain/submission/entity/Submission.kt)** – результат выполнения задания студентом с выставленной оценкой и комментариями преподавателя.
+- **[Category](src/main/kotlin/v/orm/domain/category/entity/Category.kt)** – классификация курсов по тематическим направлениям.
+- **[Course](src/main/kotlin/v/orm/domain/course/entity/Course.kt)** – учебный курс, создаваемый преподавателем и доступный для записи студентов.
+- **[CourseReview](src/main/kotlin/v/orm/domain/course/entity/CourseReview.kt)** - отзыв пользователя о качестве и содержании курса.
+- **[Enrollment](src/main/kotlin/v/orm/domain/enrollment/entity/Enrollment.kt)** – сущность, фиксирующая факт зачисления студента на курс.
+- **[Tag](src/main/kotlin/v/orm/domain/course/entity/Tag.kt)** - ключевое слово для дополнительной классификации и поиска курсов.
+- **[Question](src/main/kotlin/v/orm/domain/quiz/entity/Question.kt)** – элемент теста, содержащий формулировку вопроса и набор ответов.
+- **[AnswerOption](src/main/kotlin/v/orm/domain/quiz/entity/AnswerOption.kt)** – возможный вариант ответа на вопрос теста с указанием корректности.
+- **[Quiz](src/main/kotlin/v/orm/domain/quiz/entity/Quiz.kt)** – модульный тест, связанный с учебным блоком и включающий набор вопросов.
+- **[QuizSubmission](src/main/kotlin/v/orm/domain/quiz/entity/QuizSubmission.kt)** – данные о прохождении теста студентом с результатами и временем выполнения.
